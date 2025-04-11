@@ -15,8 +15,8 @@ const {
 } = process.env;
 
 if (!GCP_PROJECT_ID) {
-    console.error('❌ GCP_PROJECT_ID is missing from environment variables.');
-    process.exit(1);  // Exit the process if GCP_PROJECT_ID is required
+    console.error('GCP_PROJECT_ID is missing from environment variables.');
+    process.exit(1);
 }
 
 const app = express();
@@ -47,20 +47,27 @@ const startServer = async () => {
         process.on('SIGTERM', () => shutdown('SIGTERM'));
 
     } catch (error) {
-        console.error('❌ Failed to connect to the database:', error);
+        console.error('Failed to connect to the database:', error);
         process.exit(1);
     }
 };
 
 const main = async () => {
     try {
-        // Ensure the secrets are fetched with a valid project ID
         await fetchSecrets(GCP_PROJECT_ID);
+        console.log('Secrets fetched successfully.');
+        if (process.env.DATABASE_URL) {
+            console.log('DATABASE_URL is set:', process.env.DATABASE_URL);
+        } else {
+            console.error('DATABASE_URL is not set!');
+            process.exit(1);
+        }
         await startServer();
+        console.log('Server started successfully.');
     } catch (error) {
-        console.error('❌ Error in main function:', error);
-        process.exit(1);  // Exit if something goes wrong
+        console.error(' Error in main function:', error);
+        process.exit(1);
     }
 };
 
-main().catch(console.error);
+main();

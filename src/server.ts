@@ -1,8 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
-import prisma from './prisma';
-import userRouter from './routes/user';
+import healthCheckrouter from './routes/health-check';
 import fetchSecrets from './lib/secrets';
 
 require('dotenv').config({
@@ -23,20 +22,16 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api/users', userRouter);
+app.use('/api/version', healthCheckrouter);
 
 const startServer = async () => {
     try {
-        await prisma.$connect();
-        console.log('Database connected successfully');
-
         const server = app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
         });
 
         const shutdown = async (signal: string) => {
             console.log(`Received ${signal}. Closing server...`);
-            await prisma.$disconnect();
             server.close(() => {
                 console.log('Server closed.');
                 process.exit(0);

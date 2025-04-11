@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --ext ts --exec ts-node src/server.ts",
-    "start": "node dist/server.js",
-    "db:create:dev": "NODE_ENV=development ts-node -r dotenv/config prisma/db-create.ts"
+    "dev": "nodemon --ext ts --exec ts-node src/main.ts",
+    "start": "node dist/main.js"
   },
   "keywords": [],
   "author": "",
@@ -15,15 +14,12 @@
   "type": "commonjs",
   "dependencies": {
     "@google-cloud/secret-manager": "^6.0.1",
-    "@prisma/client": "^6.5.0",
     "bcrypt": "^5.1.1",
     "child_process": "^1.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "firebase-admin": "^13.2.0",
-    "pg": "^8.14.1",
-    "prisma": "^6.5.0"
+    "pg": "^8.14.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.26.4",
